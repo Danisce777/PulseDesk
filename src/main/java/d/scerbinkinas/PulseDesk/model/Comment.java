@@ -9,9 +9,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
 
+@Entity
 @Data
 @Builder
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "comments")
@@ -25,4 +25,7 @@ public class Comment {
     private OffsetDateTime dateCreated;
 
     private String description;
+
+    @OneToOne(mappedBy = "comment")
+    private Ticket ticket;
 }

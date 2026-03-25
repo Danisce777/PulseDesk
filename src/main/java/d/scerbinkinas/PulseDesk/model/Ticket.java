@@ -6,22 +6,26 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Entity
 @Data
 @Builder
-@Table(name = "tickets")
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "tickets")
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String title;
+
+    @Enumerated(EnumType.STRING)
     private Category category;
+
+    @Enumerated(EnumType.STRING)
     private Priority priority;
+
     private String summary;
 
     public enum Category {
@@ -31,4 +35,8 @@ public class Ticket {
     public enum Priority {
         HIGH, MEDIUM, LOW
     }
+
+    @OneToOne
+    @JoinColumn(name = "comment_id", nullable = false)
+    private Comment comment;
 }
