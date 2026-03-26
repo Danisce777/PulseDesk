@@ -8,10 +8,12 @@ import d.scerbinkinas.PulseDesk.model.Ticket;
 import d.scerbinkinas.PulseDesk.repository.CommentRepository;
 import d.scerbinkinas.PulseDesk.repository.TicketRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class CommentService {
@@ -29,7 +31,7 @@ public class CommentService {
 
         AiResponseDto response = huggingFaceService.analyzeComment(request.getDescription());
 
-        if (response != null && response.isTicket()) {
+        if (response != null && response.isNeedsTicket()) {
             Ticket ticket = Ticket.builder()
                     .title(response.getTitle())
                     .category(parseCategory(response.getCategory()))
@@ -38,9 +40,9 @@ public class CommentService {
                     .comment(comment)
                     .build();
 
+            ticketRepository.save(ticket);
             comment.setTicket(ticket);
             commentRepository.save(comment);
-            ticketRepository.save(ticket);
         }
         return CommentResponseDto.from(comment);
     }
