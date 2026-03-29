@@ -42,7 +42,6 @@ public class CommentService {
 
             ticketRepository.save(ticket);
             comment.setTicket(ticket);
-            commentRepository.save(comment);
         }
         return CommentResponseDto.from(comment);
     }

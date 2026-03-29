@@ -24,6 +24,7 @@ public class Comment {
     @CreationTimestamp
     private OffsetDateTime dateCreated;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @OneToOne(mappedBy = "comment")
